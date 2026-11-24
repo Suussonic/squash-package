@@ -13,7 +13,7 @@ namespace Suussonic.Squash
             
             if (!target.TryGetComponent(out SquashRunner runner))
             { 
-                runner = target.gameObject.GetComponent<SquashRunner>();
+                runner = target.gameObject.AddComponent<SquashRunner>();
             }
 
             runner.PlaySquash(force, iterations, duration, axis, unscaledTime, onBounce);
