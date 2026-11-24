@@ -1,0 +1,22 @@
+{
+    "name": "com.suussonic.squash",
+    "version": "0.1.0",
+    "displayName": "Squash Feedback",
+    "description": "Applique des déformations Squash & Stretch sur un Transform en une seule ligne de code.",
+    "unity": "2022.3",
+    "license": "MIT",
+    "keywords": [
+        "squash",
+        "stretch",
+        "feedback",
+        "transform",
+        "animation"
+    ],
+    "samples": [
+        {
+            "displayName": "Scène de démonstration",
+            "description": "Exemples d'utilisation du Squash sur différents objets 3D et UI.",
+            "path": "Samples~/DemoSquash"
+        }
+    ]
+}

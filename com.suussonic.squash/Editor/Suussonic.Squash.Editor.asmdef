@@ -1,0 +1,18 @@
+{
+    "name": "Suussonic.Squash.Editor",
+    "rootNamespace": "Suussonic.Squash.Editor",
+    "references": [
+        "GUID:bc1c870d1b64dd046aeb9d822aeac05f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
