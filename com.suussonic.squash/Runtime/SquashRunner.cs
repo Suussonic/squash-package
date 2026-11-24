@@ -14,9 +14,9 @@ namespace Suussonic.Squash
   [AddComponentMenu("")]
   public class SquashRunner : MonoBehaviour
   {
-    private Vector3 initialScale;
-    private Coroutine activeCoroutine;
-    private bool isPlaying;
+    private Vector3 _initialScale;
+    private Coroutine _activeCoroutine;
+    private bool _isPlaying = false;
 
 
     public void PlaySquash(float force, int iterations, float duration, SquashAxis axis, bool unscaledTime,
@@ -27,32 +27,32 @@ namespace Suussonic.Squash
         return;
       }
 
-      if (!isPlaying)
+      if (_isPlaying)
       {
-        if (activeCoroutine != null) StopCoroutine(activeCoroutine);
+        if (_activeCoroutine != null) StopCoroutine(_activeCoroutine);
       }
       else
       {
-        initialScale = transform.localScale;
-        isPlaying = true;
+        _initialScale = transform.localScale;
+        _isPlaying = true;
       }
 
-      activeCoroutine = StartCoroutine(SquashCoroutine(force, iterations, duration, axis, unscaledTime, onBounce));
+      _activeCoroutine = StartCoroutine(SquashCoroutine(force, iterations, duration, axis, unscaledTime, onBounce));
     }
 
     public void StopSquash()
     {
-      if (activeCoroutine != null)
+      if (_activeCoroutine != null)
       {
-        StopCoroutine(activeCoroutine);
-        activeCoroutine = null;
+        StopCoroutine(_activeCoroutine);
+        _activeCoroutine = null;
       }
 
-      if (isPlaying)
+      if (_isPlaying)
       {
-        transform.localScale = initialScale;
-        isPlaying = false;
-        activeCoroutine = null;
+        transform.localScale = _initialScale;
+        _isPlaying = false;
+        _activeCoroutine = null;
       }
     }
 
@@ -84,26 +84,26 @@ namespace Suussonic.Squash
           onBounce?.Invoke();
         }
 
-        Vector3 scale = initialScale;
+        Vector3 scale = _initialScale;
 
         switch (axis)
         {
           case SquashAxis.X:
-            scale.x = initialScale.x * (1f - facteur);
-            scale.y = initialScale.y * (1f + facteur * 0.5f);
-            scale.z = initialScale.z * (1f + facteur * 0.5f);
+            scale.x = _initialScale.x * (1f - facteur);
+            scale.y = _initialScale.y * (1f + facteur * 0.5f);
+            scale.z = _initialScale.z * (1f + facteur * 0.5f);
             break;
 
           case SquashAxis.Y:
-            scale.y = initialScale.y * (1f - facteur);
-            scale.x = initialScale.x * (1f + facteur * 0.5f);
-            scale.z = initialScale.z * (1f + facteur * 0.5f);
+            scale.y = _initialScale.y * (1f - facteur);
+            scale.x = _initialScale.x * (1f + facteur * 0.5f);
+            scale.z = _initialScale.z * (1f + facteur * 0.5f);
             break;
 
           case SquashAxis.Z:
-            scale.z = initialScale.z * (1f - facteur);
-            scale.x = initialScale.x * (1f + facteur * 0.5f);
-            scale.y = initialScale.y * (1f + facteur * 0.5f);
+            scale.z = _initialScale.z * (1f - facteur);
+            scale.x = _initialScale.x * (1f + facteur * 0.5f);
+            scale.y = _initialScale.y * (1f + facteur * 0.5f);
             break;
         }
 
@@ -112,9 +112,9 @@ namespace Suussonic.Squash
         yield return null;
       }
 
-      transform.localScale = initialScale;
-      isPlaying = false;
-      activeCoroutine = null;
+      transform.localScale = _initialScale;
+      _isPlaying = false;
+      _activeCoroutine = null;
     }
 
   }
