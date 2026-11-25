@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace Suussonic.Wiggle
+namespace Suussonic.Squash
 {
     public static class WiggleExtensions
     {

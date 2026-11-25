@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-namespace Suussonic.Wiggle
+namespace Suussonic.Squash
 { 
     public enum WiggleAxis
     {
@@ -15,7 +15,7 @@ namespace Suussonic.Wiggle
   [AddComponentMenu("")]
   public class WiggleRunner : MonoBehaviour
   {
-    private Vector3 _initialrotation;
+    private Quaternion _initialrotation;
     private Coroutine _activeCoroutine;
     private bool _isPlaying = false;
 
@@ -34,7 +34,7 @@ namespace Suussonic.Wiggle
       }
       else
       {
-        _initialrotation = transform.localrotation;
+        _initialrotation = transform.rotation;
         _isPlaying = true;
       }
 
@@ -51,7 +51,7 @@ namespace Suussonic.Wiggle
 
       if (_isPlaying)
       {
-        transform.localrotation = _initialrotation;
+        transform.rotation = _initialrotation;
         _isPlaying = false;
         _activeCoroutine = null;
       }
@@ -70,7 +70,7 @@ namespace Suussonic.Wiggle
 
       while (PassedTime < duration)
       {
-        float dt = unscaledTime ? Time.unrotationdDeltaTime : Time.deltaTime;
+        float dt = unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
         PassedTime += dt;
         float progression = Mathf.Min(PassedTime / duration, 1);
 
@@ -85,7 +85,7 @@ namespace Suussonic.Wiggle
           onBounce?.Invoke();
         }
 
-        Vector3 rotation = _initialrotation;
+        Quaternion rotation = _initialrotation;
 
         switch (axis)
         {
@@ -108,16 +108,18 @@ namespace Suussonic.Wiggle
             break;
           
           case WiggleAxis.All:
-            rotation = _initialrotation * (1f - facteur);
+            rotation.x = _initialrotation.x * (1f - facteur);
+            rotation.y = _initialrotation.y * (1f - facteur);
+            rotation.z = _initialrotation.z * (1f - facteur);
             break;
         }
 
-        transform.localrotation = rotation;
+        transform.rotation = rotation;
 
         yield return null;
       }
 
-      transform.localrotation = _initialrotation;
+      transform.rotation = _initialrotation;
       _isPlaying = false;
       _activeCoroutine = null;
     }
