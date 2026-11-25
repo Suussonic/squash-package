@@ -8,7 +8,8 @@ namespace Suussonic.Squash
     {
       X,
       Y,
-      Z
+      Z,
+      All
     }
 
   [AddComponentMenu("")]
@@ -104,6 +105,10 @@ namespace Suussonic.Squash
             scale.z = _initialScale.z * (1f - facteur);
             scale.x = _initialScale.x * (1f + facteur * 0.5f);
             scale.y = _initialScale.y * (1f + facteur * 0.5f);
+            break;
+          
+          case SquashAxis.All:
+            scale = _initialScale * (1f - facteur);
             break;
         }
 

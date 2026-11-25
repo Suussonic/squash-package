@@ -15,7 +15,7 @@ transform.Squash(force: 0.4f, iterations: 3, duration: 0.5f);
 - **API en une ligne** — méthode d'extension disponible directement sur `Transform`, sans configuration préalable.
 - **Préservation du volume** — lorsque l'objet s'écrase sur un axe, il s'étire sur les deux autres.
 - **Amortissement automatique** — l'oscillation s'atténue progressivement jusqu'au retour à l'échelle d'origine.
-- **Choix de l'axe** — déformation sur l'axe `X`, `Y` ou `Z`.
+- **Choix de l'axe** — déformation sur l'axe `X`, `Y`, `Z` ou `All`.
 - **Compatible avec les pauses** — l'option `unscaledTime` permet d'ignorer `Time.timeScale`.
 - **Callback `onBounce`** — invoqué à chaque rebond, idéal pour déclencher un son ou des particules.
 - **Retour automatique à l'échelle initiale** — même si l'objet est désactivé pendant l'effet.
@@ -91,9 +91,26 @@ public static void Squash(
 | `force`        | `float`      | —               | Intensité de la déformation (ex. `0.4` représente une variation limitée à ±95 %). |
 | `iterations`   | `int`        | —               | Nombre d'oscillations réalisées pendant l'effet.                            |
 | `duration`     | `float`      | —               | Durée totale de l'effet en secondes.                                        |
-| `axis`         | `SquashAxis` | `SquashAxis.Y`  | Axe principal de l'écrasement : `X`, `Y` ou `Z`.                           |
+| `axis`         | `SquashAxis` | `SquashAxis.Y`  | Axe principal de l'écrasement : `X`, `Y`, `Z` ou `All`.                           |
 | `unscaledTime` | `bool`       | `false`         | Si `true`, utilise `Time.unscaledDeltaTime` et ignore `Time.timeScale`.      |
 | `onBounce`     | `Action`     | `null`          | Callback invoqué à chaque demi-cycle de l'effet.                            |
+
+> L'appel est ignoré si `duration <= 0` ou `force == 0`.
+
+### `Pump(...)`
+```csharp
+public static void Pump(
+    this Transform target, 
+    float force, 
+    int iterations, 
+    float duration, 
+    SquashAxis axis = SquashAxis.Y, 
+    bool unscaledTime = false, 
+    Action onBounce = null 
+    );
+```
+
+Déclenche un effet d'écrasement sur l'objet ciblé avec les paramètres spécifiés. L'effet se répète autant de fois que nécessaire pour atteindre la durée totale spécifiée.
 
 > L'appel est ignoré si `duration <= 0` ou `force == 0`.
 
@@ -108,7 +125,7 @@ Interrompt immédiatement l'effet en cours et restaure l'échelle d'origine du `
 ### `SquashAxis`
 
 ```csharp
-public enum SquashAxis { X, Y, Z }
+public enum SquashAxis { X, Y, Z, All }
 ```
 
 Axe principal de l'écrasement. Les deux autres axes s'étirent à hauteur de la moitié du facteur appliqué pour conserver une déformation équilibrée.

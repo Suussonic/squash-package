@@ -15,9 +15,22 @@ namespace Suussonic.Squash
             { 
                 runner = target.gameObject.AddComponent<SquashRunner>();
             }
-
+            
             runner.PlaySquash(force, iterations, duration, axis, unscaledTime, onBounce);
-
+        }
+        
+        public static void Pump(this Transform target, float force, int iterations, float duration, bool unscaledTime = false, Action onBounce = null){
+            if (target == null)
+            {
+                return;
+            }
+            
+            if (!target.TryGetComponent(out SquashRunner runner))
+            { 
+                runner = target.gameObject.AddComponent<SquashRunner>();
+            }
+            
+            runner.PlaySquash(force, iterations, duration, SquashAxis.All, unscaledTime, onBounce);
         }
         
         public static void StopSquash(this Transform target)
