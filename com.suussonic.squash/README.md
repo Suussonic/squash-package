@@ -122,6 +122,20 @@ public static void StopSquash(this Transform target);
 
 Interrompt immédiatement l'effet en cours et restaure l'échelle d'origine du `Transform`.
 
+### `Wiggle(...)`
+
+```csharp
+transform.Wiggle(
+    force: 20f,
+    iterations: 3,
+    duration: 0.5f,
+    axis: WiggleAxis.Y,
+    unscaledTime: false
+);
+```
+
+Anime la rotation autour de l'axe choisi, puis restaure la rotation initiale. `force` définit l'amplitude maximale en degrés. `unscaledTime` permet de continuer l'animation lorsque `Time.timeScale` vaut `0`.
+
 ### `SquashAxis`
 
 ```csharp

@@ -15,7 +15,7 @@ namespace Suussonic.Squash
   [AddComponentMenu("")]
   public class WiggleRunner : MonoBehaviour
   {
-    private Quaternion _initialrotation;
+    private Quaternion _initialRotation;
     private Coroutine _activeCoroutine;
     private bool _isPlaying = false;
 
@@ -34,7 +34,7 @@ namespace Suussonic.Squash
       }
       else
       {
-        _initialrotation = transform.rotation;
+        _initialRotation = transform.rotation;
         _isPlaying = true;
       }
 
@@ -51,7 +51,7 @@ namespace Suussonic.Squash
 
       if (_isPlaying)
       {
-        transform.rotation = _initialrotation;
+        transform.rotation = _initialRotation;
         _isPlaying = false;
         _activeCoroutine = null;
       }
@@ -76,7 +76,7 @@ namespace Suussonic.Squash
 
         float angle = progression * iterations * 2 * Mathf.PI;
         float amortissement = 1 - progression;
-        float facteur = Mathf.Clamp(Mathf.Sin(angle) * force * amortissement, -0.95f, 0.95f);
+        float angleOffset = Mathf.Sin(angle) * force * amortissement;
 
         int halfcycle = Mathf.FloorToInt(progression * iterations * 2);
         if (halfcycle > LastHalfCycle)
@@ -85,41 +85,33 @@ namespace Suussonic.Squash
           onBounce?.Invoke();
         }
 
-        Quaternion rotation = _initialrotation;
+        Vector3 rotationOffset = Vector3.zero;
 
         switch (axis)
         {
           case WiggleAxis.X:
-            rotation.x = _initialrotation.x * (1f - facteur);
-            rotation.y = _initialrotation.y * (1f + facteur * 0.5f);
-            rotation.z = _initialrotation.z * (1f + facteur * 0.5f);
+            rotationOffset.x = angleOffset;
             break;
 
           case WiggleAxis.Y:
-            rotation.y = _initialrotation.y * (1f - facteur);
-            rotation.x = _initialrotation.x * (1f + facteur * 0.5f);
-            rotation.z = _initialrotation.z * (1f + facteur * 0.5f);
+            rotationOffset.y = angleOffset;
             break;
 
           case WiggleAxis.Z:
-            rotation.z = _initialrotation.z * (1f - facteur);
-            rotation.x = _initialrotation.x * (1f + facteur * 0.5f);
-            rotation.y = _initialrotation.y * (1f + facteur * 0.5f);
+            rotationOffset.z = angleOffset;
             break;
           
           case WiggleAxis.All:
-            rotation.x = _initialrotation.x * (1f - facteur);
-            rotation.y = _initialrotation.y * (1f - facteur);
-            rotation.z = _initialrotation.z * (1f - facteur);
+            rotationOffset = new Vector3(angleOffset, angleOffset, angleOffset);
             break;
         }
 
-        transform.rotation = rotation;
+        transform.rotation = Quaternion.Euler(rotationOffset) * _initialRotation;
 
         yield return null;
       }
 
-      transform.rotation = _initialrotation;
+      transform.rotation = _initialRotation;
       _isPlaying = false;
       _activeCoroutine = null;
     }
