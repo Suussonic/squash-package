@@ -136,6 +136,23 @@ transform.Wiggle(
 
 Anime la rotation autour de l'axe choisi, puis restaure la rotation initiale. `force` définit l'amplitude maximale en degrés. `unscaledTime` permet de continuer l'animation lorsque `Time.timeScale` vaut `0`.
 
+### `Bounce(...)`
+
+```csharp
+transform.Bounce(
+    force: 0.5f,
+    iterations: 3,
+    duration: 0.5f,
+    axis: BounceAxis.Y,
+    unscaledTime: false,
+    onBounce: () => Debug.Log("Rebond")
+);
+
+transform.StopBounce();
+```
+
+Anime la position dans l'espace monde autour de la position initiale, puis la restaure. `force` définit l'amplitude maximale en unités Unity ; `axis` vaut `X`, `Y`, `Z` ou `All` (les trois axes simultanément). `iterations` indique le nombre d'oscillations complètes, `duration` la durée en secondes et `onBounce` est appelé à chaque demi-cycle atteint. Avec `unscaledTime: true`, l'effet continue pendant une pause. Un nouvel appel remplace l'effet en cours en conservant la position initiale. `StopBounce()` ou la désactivation de l'objet interrompt l'effet et restaure cette position. L'appel est ignoré si `duration <= 0` ou `force == 0`.
+
 ### `SquashAxis`
 
 ```csharp
